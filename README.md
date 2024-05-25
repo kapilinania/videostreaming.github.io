@@ -49,8 +49,8 @@ This project demonstrates how to stream video content from FFmpeg to an HTML pag
 
 5. **Viewing the Video Stream:**
    - Start the HTTP server.
-   -  ``` python
-    python3 server.py
+   -  ```
+       python3 server.py
      ```
    - Open a web browser and navigate to the HTML page.
    - The video stream should start playing with playback controls.
