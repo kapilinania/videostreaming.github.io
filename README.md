@@ -24,7 +24,9 @@ This project demonstrates how to stream video content from FFmpeg to an HTML pag
    - Create a server script to serve the video content.
    - Example Python script (`server.py`) using `http.server` module:
      ```python
+     -----above c```python
      -----above code ----
+     ```ode ----
      ```
 
 4. **Create HTML Page for Video Streaming:**
@@ -47,6 +49,9 @@ This project demonstrates how to stream video content from FFmpeg to an HTML pag
 
 5. **Viewing the Video Stream:**
    - Start the HTTP server.
+   -  ``` python
+    python3 server.py
+     ```
    - Open a web browser and navigate to the HTML page.
    - The video stream should start playing with playback controls.
 
