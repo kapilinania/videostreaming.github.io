@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        #video {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .icon {
+            color: #3498db;
+            cursor: pointer;
+        }
+        .icon:hover {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Video Streaming Example</h1>
+        <video id="video" controls></video>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        const AUTH_TOKEN = "9828522814"; // Your token
+
+        async function checkAuthentication() {
+            const response = await fetch('http://localhost:8000/auth', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: AUTH_TOKEN })
+            });
+
+            const data = await response.json();
+            return data.status === 'success';
+        }
+
+        async function initVideo() {
+            const isAuthenticated = await checkAuthentication();
+            const video = document.getElementById('video');
+
+            if (!isAuthenticated) {
+                document.body.innerHTML = '<div class="container"><p>You are not authenticated</p></div>';
+                return;
+            }
+
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(`video/index.m3u8?token=${AUTH_TOKEN}`);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = `video/index.m3u8?token=${AUTH_TOKEN}`;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                });
+            }
+        }
+
+        initVideo();
+    </script>
+</body>
+</html>
